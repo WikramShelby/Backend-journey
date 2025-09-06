@@ -1,16 +1,12 @@
 {
   "name": "backend-journey",
   "version": "1.0.0",
-  "type": "module",
-  "description": "\"#My backend journey--\" \r I\u0000 \u0000c\u0000o\u0000n\u0000n\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000V\u0000S\u0000C\u0000o\u0000d\u0000e\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000G\u0000i\u0000t\u0000H\u0000U\u0000B\u0000\r\u0000 \u0000",
   "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
+  "type": "module",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",
@@ -23,12 +19,13 @@
     "url": "https://github.com/WikramShelby/Backend-journey/issues"
   },
   "homepage": "https://github.com/WikramShelby/Backend-journey#readme",
+  "description": "",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
-    "mongoose": "^8.18.0"
-  },
-  "devDependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0",
     "nodemon": "^3.1.10"
   }
 }
