@@ -8,7 +8,7 @@ app.use(express.json());
 
 // Routes
 app.get("/", (req, res) => {
-  res.send("✅ Backend server is running!");
+  res.send("✅ Backend server is runninggggggg!");
 });
 
 app.use("/api/users", userRoutes);
