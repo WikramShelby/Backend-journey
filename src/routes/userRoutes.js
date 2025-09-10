@@ -1,60 +1,32 @@
 import express from "express";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
-import protect from "../middleWare/authMiddleWare.js"
+import { body } from "express-validator"; // validation
+import { registerUser, loginUser, getUserProfile } from "../controller/userController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-//register
-router.post("/register", async (req,res)=>{
-  try{
-    const { name , email , password } = req.body;
+// Register User with validation
+router.post(
+  "/register",
+  [
+    body("name").notEmpty().withMessage("Name is required"),
+    body("email").isEmail().withMessage("Valid email is required"),
+    body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 chars long"),
+  ],
+  registerUser
+);
 
-    //check user existing 
-    const userExists = await User.findOne({email});
-    if(userExists) return res.status(400).json({ message: "User already exists"});
+// Login User
+router.post(
+  "/login",
+  [
+    body("email").isEmail().withMessage("Valid email is required"),
+    body("password").notEmpty().withMessage("Password is required"),
+  ],
+  loginUser
+);
 
-    //hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password,salt);
-
-    //save user
-    const user = await User.create({name,email,password:hashedPassword});
-    res.status(201).json({message:"User registered successfully", user});
-  } catch (err) {
-    res.status(500).json({message : err.message});
-  }
-});
-
-//login
-
-router.post("/login", async(req,res)=>{
-  try{
-    const {email,password} = req.body;
-    // Find user
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
-
-    // Compare password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
-
-    // Generate JWT
-    const token = jwt.sign({ id: user._id }, "supersecretkey", { expiresIn: "1h" });
-
-    res.json({ message: "Login successful", token });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-//profile
-router.get("/profile",protect,(req,res)=>{
-  res.json({
-    message:"Profile data",
-    user:req.user
-  });
-});
+// User Profile
+router.get("/profile", protect, getUserProfile);
 
 export default router;
