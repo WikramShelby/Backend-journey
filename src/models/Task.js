@@ -5,18 +5,17 @@ const taskModelSchema = new mongoose.Schema(
     title: { type: String, required: true },
     description: { type: String, required: true },
 
-    // Track which user created the task
+    // More flexible status
+    status: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
-    },
-
-    // More flexible status
-    status: {
-      type: String,
-      enum: ['pending', 'in-progress', 'completed'],
-      default: 'pending',
     },
   },
   { timestamps: true }
